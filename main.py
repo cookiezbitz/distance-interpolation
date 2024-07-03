@@ -9,7 +9,7 @@ alive = True
 win_name = "Camera Filters"
 cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
 result = None
-
+#merge editor
 source = cv2.VideoCapture(0)
 key = cv2.waitKey(1)
 
