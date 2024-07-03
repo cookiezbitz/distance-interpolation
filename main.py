@@ -22,8 +22,10 @@ while alive:
         break
     elif key == ord('s'):
         cv2.imwrite('screenshot.png', frame)
+        #takes a snapshot
     elif key == ord('f'):
         cv2.imwrite('filtered.png', result)
+        #takes a snapshot and saves it as filtered.png, this one is for modifications
 
 
 source.release()
