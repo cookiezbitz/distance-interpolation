@@ -1,7 +1,7 @@
 import cv2
 import time
 
-source = cv2.VideoCapture("/dev/media0", cv2.CAP_V4L)
+source = cv2.VideoCapture(0, cv2.CAP_V4L)
 
 # Add a warm-up period
 time.sleep(2)  # Wait for 2 seconds
