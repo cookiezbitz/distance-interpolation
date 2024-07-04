@@ -1,3 +1,5 @@
+# This portion of the code would only work on a raspberry pi with the picamera module installed
+# This code is used to capture images from two cameras simultaneouslyq
 from picamera2 import Picamera2, Preview
 from time import sleep
 
