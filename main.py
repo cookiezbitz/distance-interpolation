@@ -1,13 +1,9 @@
 """SETTINGS AND VARIABLES ________________________________________________________________"""
 
 import numpy
-
 import cv2
 import matplotlib.pyplot as plt
-
 from time import sleep
-
-
 import os
 import sys
 
