@@ -11,17 +11,15 @@ from picamera2 import Picamera2, Preview
 
 
 
-cam1 = Picamera2(0)
-#cam2 = Picamera2(1)
-#cam1.start_preview(Preview.QTGL)
-#cam2.start_preview(Preview.QTGL)
-source = cam1.start_preview(Preview.QTGL)
+# Initialize Picamera2
+cam1 = Picamera2()
+preview_config = cam1.create_preview_configuration()
+cam1.configure(preview_config)
+cam1.start()
 
 alive = True
 win_name = "Camera Filters"
 cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
-result = None
-
 
 
 
@@ -29,8 +27,12 @@ result = None
 key = cv2.waitKey(1)
 
 while alive:
-    ret, frame = source.read()
-    cv2.imshow('Video', frame)
+    # Capture an image with picamera2
+    frame = cam1.capture_array()
+    # Convert the image into a format OpenCV can use
+    frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+    # Display the image
+    cv2.imshow(win_name, frame)
     key = cv2.waitKey(1)
     if key == ord('q'):
         alive = False
@@ -38,10 +40,8 @@ while alive:
     elif key == ord('s'):
         cv2.imwrite('screenshot.png', frame)
         #takes a snapshot
-    elif key == ord('f'):
-        cv2.imwrite('filtered.png', result)
-        #takes a snapshot and saves it as filtered.png, this one is for modifications
 
 
-source.release()
-cv2.destroyWindow(win_name)
+
+cam1.stop()
+cv2.destroyAllWindows()
