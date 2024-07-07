@@ -1,3 +1,5 @@
+"""SETTINGS AND VARIABLES ________________________________________________________________"""
+
 import numpy
 
 import cv2
@@ -9,7 +11,8 @@ from imutils.video import VideoStream
 
 import os
 import sys
-"""SETTINGS AND VARIABLES ________________________________________________________________"""
+
+video_resolution = (700, 400) 
 
 RASPBERRY_BOOL = False
 # If this is run on a linux system, a picamera will be used.
@@ -26,7 +29,7 @@ alive = True
 win_name = "Camera Filters"
 cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
 result = None
-#merge editor
+
 
 vs = VideoStream(src= 0 ,
                  usePiCamera= RASPBERRY_BOOL,
