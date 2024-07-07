@@ -6,22 +6,11 @@ import cv2
 import matplotlib.pyplot as plt
 
 from time import sleep
-import imutils
-from imutils.video import VideoStream
+
 
 import os
 import sys
 
-video_resolution = (700, 400) 
-
-RASPBERRY_BOOL = False
-# If this is run on a linux system, a picamera will be used.
-# If you are using a linux system, with a webcam instead of a raspberry pi delete the following if-statement
-if sys.platform == "linux":
-    import picamera
-    from picamera2 import Picamera2, Preview
-    from picamera.array import PiRGBArray
-    RASPBERRY_BOOL = True
 
 
 
@@ -31,16 +20,6 @@ cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
 result = None
 
 
-vs = VideoStream(src= 0 ,
-                 usePiCamera= RASPBERRY_BOOL,
-                 resolution=video_resolution,
-                 framerate = 13,
-                 meter_mode = "backlit",
-                 exposure_mode ="auto",
-                 shutter_speed = 8900,
-                 exposure_compensation = 2,
-                 rotation = 0).start()
-sleep(0.2)
 
 
 source = cv2.VideoCapture(0)
