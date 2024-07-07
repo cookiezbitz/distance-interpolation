@@ -19,15 +19,10 @@ cam1 = Picamera2(0)
 cam2 = Picamera2(1)
 preview_config = cam1.create_preview_configuration()
 preview_config2 = cam2.create_preview_configuration()
-preview_config['transform']['width'] = 1920
-preview_config['transform']['height'] = 1080
-preview_config2['transform']['width'] = 1920
-preview_config2['transform']['height'] = 1080
 cam1.configure(preview_config)
 cam2.configure(preview_config2)
 cam1.start()
 cam2.start()
-
 
 cv2.namedWindow(win_name1, cv2.WINDOW_NORMAL)
 cv2.namedWindow(win_name2, cv2.WINDOW_NORMAL)
