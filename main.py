@@ -1,14 +1,21 @@
 """SETTINGS AND VARIABLES ________________________________________________________________"""
 
+## This is intended to work on linux systems
 import numpy
 import cv2
 import matplotlib.pyplot as plt
 from time import sleep
 import os
 import sys
+from picamera2 import Picamera2, Preview
 
 
 
+cam1 = Picamera2(0)
+#cam2 = Picamera2(1)
+#cam1.start_preview(Preview.QTGL)
+#cam2.start_preview(Preview.QTGL)
+source = cam1.start_preview(Preview.QTGL)
 
 alive = True
 win_name = "Camera Filters"
@@ -18,7 +25,7 @@ result = None
 
 
 
-source = cv2.VideoCapture(0)
+#source = cv2.VideoCapture(0)
 key = cv2.waitKey(1)
 
 while alive:
