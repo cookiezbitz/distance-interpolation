@@ -12,11 +12,19 @@ from picamera2 import Picamera2, Preview
 # Defining Variables
 alive = True
 firstStart = True
+
+#Start Condition variables
+
+natrual = True
+canny = False
+blur = False
 faceDetection = False
+
 win_name1 = "Right Camera"
 win_name2 = "Left Camera"
 filteredImage1 = None
 filteredImage2 = None
+
 base_dir = os.path.dirname(__file__)
 prototxt_path = os.path.join(base_dir, "lib", "deploy.prototxt")
 caffemodel_path = os.path.join(base_dir, "lib", "res10_300x300_ssd_iter_140000_fp16.caffemodel")
@@ -72,26 +80,47 @@ while alive:
         print("Screenshot saved as screenshot.png")
         #takes a snapshot
     elif key == ord('n'):
-        filteredImage1 = frame
-        filteredImage2 = frame2
+        natrual = True
+        canny = False
+        blur = False
+        faceDetection = False
     elif key == ord('c'):
-        filteredImage1 = cv2.Canny(frame, cannylow, cannyhigh)
-        filteredImage2 = cv2.Canny(frame2, cannylow, cannyhigh)
+        natrual = False
+        canny = True
+        blur = False
+        faceDetection = False
+
     elif key == ord('b'):
-        filteredImage1 = cv2.blur(frame, (5, 5))
-        filteredImage2 = cv2.blur(frame2, (5, 5))
+        natrual = False
+        canny = False
+        blur = True
+        faceDetection = False
     elif key == ord('f'):
+        natrual = False
+        canny = False
+        blur = False
         faceDetection = True
-        filteredImage1 = frame
-        filteredImage2 = frame2
+        
 
 # ====================================================================
+    if(natrual):
+        filteredImage1 = frame
+        filteredImage2 = frame2
+    if(canny):
+        filteredImage1 = cv2.Canny(frame, cannylow, cannyhigh)
+        filteredImage2 = cv2.Canny(frame2, cannylow, cannyhigh)
+    if(blur):
+        filteredImage1 = cv2.blur(frame, (5, 5))
+        filteredImage2 = cv2.blur(frame2, (5, 5))
+
     if(faceDetection):
 
         # Create a 4D blob from a frame.
         blob = cv2.dnn.blobFromImage(frame, 1.0, (in_width, in_height), mean, swapRB=False, crop=False)
+        #blob2 = cv2.dnn.blobFromImage(frame2, 1.0, (in_width, in_height), mean, swapRB=False, crop=False)
         # Run a model
         net.setInput(blob)
+        
         detections = net.forward()
 
         frame_height = frame.shape[0]
@@ -122,6 +151,8 @@ while alive:
         label = "Inference time: %.2f ms" % (t * 1000.0 / cv2.getTickFrequency())
         cv2.putText(frame, label, (0, 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0))
         cv2.imshow(win_name1, frame)
+        filteredImage1 = frame
+        filteredImage2 = frame2
 
         
 
