@@ -19,6 +19,7 @@ natrual = True
 canny = False
 blur = False
 faceDetection = False
+disparity = False
 
 win_name1 = "Right Camera"
 win_name2 = "Left Camera"
@@ -36,6 +37,9 @@ in_width = 300
 in_height = 300
 mean = [104, 117, 123]
 conf_threshold = 0.7
+
+#Stereo Vision Variables
+stereo = cv2.StereoBM.create(numDisparities=16, blockSize=15)
 
 
 #canny thresholds
@@ -84,22 +88,33 @@ while alive:
         canny = False
         blur = False
         faceDetection = False
+        disparity = False
     elif key == ord('c'):
         natrual = False
         canny = True
         blur = False
         faceDetection = False
+        disparity = False
 
     elif key == ord('b'):
         natrual = False
         canny = False
         blur = True
         faceDetection = False
+        disparity = False
     elif key == ord('f'):
         natrual = False
         canny = False
         blur = False
         faceDetection = True
+        disparity = False
+    elif key == ord('d'):
+        natrual = False
+        canny = False   
+        blur = False
+        faceDetection = False
+        disparity = True
+
         
 
 # ====================================================================
@@ -153,6 +168,9 @@ while alive:
         cv2.imshow(win_name1, frame)
         filteredImage1 = frame
         filteredImage2 = frame2
+    if(disparity):
+        filteredImage1 =  stereo.compute(frame,frame2)
+        filteredImage2 = stereo.compute(frame2,frame)
 
         
 
