@@ -17,9 +17,13 @@ win_name1 = "Right Camera"
 win_name2 = "Left Camera"
 filteredImage1 = None
 filteredImage2 = None
+base_dir = os.path.dirname(__file__)
+prototxt_path = os.path.join(base_dir, "lib", "deploy.prototxt")
+caffemodel_path = os.path.join(base_dir, "lib", "res10_300x300_ssd_iter_140000_fp16.caffemodel")
+
 
 #face detection variables
-net = cv2.dnn.readNetFromCaffe("lib/deploy.prototxt", "lib/res10_300x300_ssd_iter_140000_fp16.caffemodel")
+net = cv2.dnn.readNetFromCaffe(prototxt_path, caffemodel_path)
 in_width = 300
 in_height = 300
 mean = [104, 117, 123]
@@ -44,10 +48,7 @@ cv2.namedWindow(win_name1, cv2.WINDOW_NORMAL)
 cv2.namedWindow(win_name2, cv2.WINDOW_NORMAL)
 
 while alive:
-    if(firstStart):
-        filteredImage1 = frame
-        filteredImage2 = frame2
-        firstStart = False
+
         
     # Capture an image with picamera2
     frame = cam1.capture_array()
@@ -55,6 +56,10 @@ while alive:
     # Convert the image into a format OpenCV can use
     frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
     frame2 = cv2.cvtColor(frame2, cv2.COLOR_RGB2BGR)
+    if(firstStart):
+        filteredImage1 = frame
+        filteredImage2 = frame2
+        firstStart = False
     # Display the image
     cv2.imshow(win_name1, filteredImage1)
     cv2.imshow(win_name2, filteredImage2)
