@@ -176,7 +176,7 @@ while alive:
         cv2.imshow(win_name2, imgR)
         #filteredImage2 = stereo.compute(imgL,imgR)
 
-        print("Disparity")
+       # print("Disparity")
 
         
 
