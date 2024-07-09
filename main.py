@@ -190,7 +190,9 @@ while alive:
         imgR = cv2.imread("rightAsset.png", cv2.IMREAD_GRAYSCALE)
         stereo = cv2.StereoBM.create(numDisparities=16, blockSize=15)
         disparityComputed = stereo.compute(imgL, imgR)
-        cv2.imshow("Disparity", disparityComputed)
+        plt.imshow(disparityComputed, "gray")
+        plt.show()
+        # cv2.imshow("Disparity", disparityComputed)
         # filteredImage2 = stereo.compute(imgL,imgR)
 
     # print("Disparity")
