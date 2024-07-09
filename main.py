@@ -175,7 +175,7 @@ while alive:
         imgR = cv2.imread('rightAsset.png', cv2.IMREAD_GRAYSCALE)
         stereo = cv2.StereoBM.create(numDisparities=16, blockSize=15)
         disparityComputed = stereo.compute(imgL,imgR)
-        cv2.imshow(win_name2, imgR)
+        filteredImage1 = disparityComputed
         #filteredImage2 = stereo.compute(imgL,imgR)
 
        # print("Disparity")
