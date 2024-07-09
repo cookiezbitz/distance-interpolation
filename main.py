@@ -57,6 +57,8 @@ cam1.configure(preview_config)
 cam2.configure(preview_config2)
 cam1.start()
 cam2.start()
+# matplotlib settings
+plt.ion()
 
 cv2.namedWindow(win_name1, cv2.WINDOW_NORMAL)
 cv2.namedWindow(win_name2, cv2.WINDOW_NORMAL)
@@ -124,9 +126,7 @@ while alive:
         filteredImage1 = cv2.Canny(frame, cannylow, cannyhigh)
         filteredImage2 = cv2.Canny(frame2, cannylow, cannyhigh)
     if blur:
-        filteredImage1 = cv2.blur(frame, (5, 5))
-        filteredImage2 = cv2.blur(frame2, (5, 5))
-
+        filteredImage1 = p
     if faceDetection:
 
         # Create a 4D blob from a frame.
@@ -192,6 +192,8 @@ while alive:
         disparityComputed = stereo.compute(imgL, imgR)
         plt.imshow(disparityComputed, "gray")
         plt.show()
+        print("Watch it working")
+        plt.pause(0.001)
         # cv2.imshow("Disparity", disparityComputed)
         # filteredImage2 = stereo.compute(imgL,imgR)
 
