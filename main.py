@@ -184,15 +184,18 @@ while alive:
         filteredImage1 = frame
         filteredImage2 = frame2
     if disparity:
-        cv2.imwrite("leftAsset.png", frame)
-        cv2.imwrite("rightAsset.png", frame2)
-        imgL = cv2.imread("leftAsset.png", cv2.IMREAD_GRAYSCALE)
-        imgR = cv2.imread("rightAsset.png", cv2.IMREAD_GRAYSCALE)
+    #    cv2.imwrite("leftAsset.png", frame)
+    #    cv2.imwrite("rightAsset.png", frame2)
+    #    imgL = cv2.imread("leftAsset.png", cv2.IMREAD_GRAYSCALE)
+    #    imgR = cv2.imread("rightAsset.png", cv2.IMREAD_GRAYSCALE)
+        gray1 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        gray2 = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
         stereo = cv2.StereoBM.create(numDisparities=16, blockSize=15)
-        disparityComputed = stereo.compute(imgL, imgR)
-        plt.imshow(disparityComputed, "gray")
-        plt.show()
-        # cv2.imshow("Disparity", disparityComputed)
+        disparityComputed = stereo.compute(gray1, gray2)
+        #plt.imshow(disparityComputed, "gray")
+        #plt.show()
+        
+        cv2.imshow("Disparity", disparityComputed)
         # filteredImage2 = stereo.compute(imgL,imgR)
 
     # print("Disparity")
