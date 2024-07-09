@@ -196,7 +196,7 @@ while alive:
         #plt.imshow(disparityComputed, "gray")
         #plt.show()
         
-        cv2.imshow("Disparity", disparityComputed)
+        cv2.imshow("Disparity", gray1)
         # filteredImage2 = stereo.compute(imgL,imgR)
 
     # print("Disparity")
