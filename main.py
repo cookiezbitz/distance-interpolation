@@ -169,10 +169,10 @@ while alive:
         filteredImage1 = frame
         filteredImage2 = frame2
     if(disparity):
-        cv2.imwrite('depth-assets/leftAsset.png', frame)
-        cv2.imwrite('depth-assets/rightAsset.png', frame2)
-        imgL = cv2.imread('depth-assets/leftAsset.png', cv2.IMREAD_GRAYSCALE)
-        imgR = cv2.imread('depth-assets/rightAsset.png', cv2.IMREAD_GRAYSCALE)
+        cv2.imwrite('leftAsset.png', frame)
+        cv2.imwrite('rightAsset.png', frame2)
+        imgL = cv2.imread('leftAsset.png', cv2.IMREAD_GRAYSCALE)
+        imgR = cv2.imread('rightAsset.png', cv2.IMREAD_GRAYSCALE)
         stereo = cv2.StereoBM.create(numDisparities=16, blockSize=15)
         disparityComputed = stereo.compute(imgL,imgR)
         cv2.imshow(win_name2, imgR)
