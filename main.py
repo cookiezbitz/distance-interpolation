@@ -1,7 +1,7 @@
 """SETTINGS AND VARIABLES ________________________________________________________________"""
 
 ## This is intended to work on linux systems
-import numpy
+import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 from time import sleep
@@ -191,12 +191,33 @@ while alive:
     #    imgR = cv2.imread("rightAsset.png", cv2.IMREAD_GRAYSCALE)
         gray1 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         gray2 = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
-        stereo = cv2.StereoBM.create(numDisparities=16, blockSize=15)
-        disparityComputed = stereo.compute(gray1, gray2)
+        
+        
+        #stereo = cv2.StereoBM.create(numDisparities=16, blockSize=15)
+
+        #set stereo variables
+        mindisp = 2
+        numDisp = 16
+        bSize = 15
+        uniqueRatio = 10
+        speckWindowSize = 100
+        speckRange = 32
+        disp12 = 5
+
+        stereo = cv2.StereoSGBM_create(minDisparity = mindisp ,numDisparities=numDisp, blockSize=bSize, 
+                                     uniquenessRatio=uniqueRatio, speckleWindowSize=speckWindowSize, 
+                                     speckleRange=speckRange, disp12MaxDiff=disp12,
+                                     P1=8*3*bSize*bSize, P2=32*3*bSize*bSize)
+        
+        disparityComputed = stereo.compute(gray2, gray1)
         #plt.imshow(disparityComputed, "gray")
         #plt.show()
         disparityComputed = cv2.normalize(disparityComputed, disparityComputed, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
-        disparityComputed = numpy.uint8(disparityComputed)
+        disparityComputed = np.uint8(disparityComputed)
+
+        disparityComputed = ((disparityComputed.astype(np.float32) / 16) - 1) / 64
+
+        
         
         cv2.imshow("Disparity", disparityComputed)
         # filteredImage2 = stereo.compute(imgL,imgR)
