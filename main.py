@@ -13,7 +13,7 @@ from picamera2 import Picamera2, Preview
 alive = True
 firstStart = True
 
-#Start Condition variables
+# Start Condition variables
 
 natrual = True
 canny = False
@@ -28,21 +28,23 @@ filteredImage2 = None
 
 base_dir = os.path.dirname(__file__)
 prototxt_path = os.path.join(base_dir, "lib", "deploy.prototxt")
-caffemodel_path = os.path.join(base_dir, "lib", "res10_300x300_ssd_iter_140000_fp16.caffemodel")
+caffemodel_path = os.path.join(
+    base_dir, "lib", "res10_300x300_ssd_iter_140000_fp16.caffemodel"
+)
 
 
-#face detection variables
+# face detection variables
 net = cv2.dnn.readNetFromCaffe(prototxt_path, caffemodel_path)
 in_width = 300
 in_height = 300
 mean = [104, 117, 123]
 conf_threshold = 0.7
 
-#Stereo Vision Variables
+# Stereo Vision Variables
 stereo = cv2.StereoBM.create(numDisparities=16, blockSize=15)
 
 
-#canny thresholds
+# canny thresholds
 cannylow = 100
 cannyhigh = 200
 
@@ -61,14 +63,13 @@ cv2.namedWindow(win_name2, cv2.WINDOW_NORMAL)
 
 while alive:
 
-        
     # Capture an image with picamera2
     frame = cam1.capture_array()
-    frame2 = cam2.capture_array()   
+    frame2 = cam2.capture_array()
     # Convert the image into a format OpenCV can use
     frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
     frame2 = cv2.cvtColor(frame2, cv2.COLOR_RGB2BGR)
-    if(firstStart):
+    if firstStart:
         filteredImage1 = frame
         filteredImage2 = frame2
         firstStart = False
@@ -76,66 +77,66 @@ while alive:
     cv2.imshow(win_name1, filteredImage1)
     cv2.imshow(win_name2, filteredImage2)
     key = cv2.waitKey(1)
-    if key == ord('q'):
+    if key == ord("q"):
         alive = False
         break
-    elif key == ord('s'):
-        cv2.imwrite('screenshot.png', frame)
+    elif key == ord("s"):
+        cv2.imwrite("screenshot.png", frame)
         print("Screenshot saved as screenshot.png")
-        #takes a snapshot
-    elif key == ord('n'):
+        # takes a snapshot
+    elif key == ord("n"):
         natrual = True
         canny = False
         blur = False
         faceDetection = False
         disparity = False
-    elif key == ord('c'):
+    elif key == ord("c"):
         natrual = False
         canny = True
         blur = False
         faceDetection = False
         disparity = False
 
-    elif key == ord('b'):
+    elif key == ord("b"):
         natrual = False
         canny = False
         blur = True
         faceDetection = False
         disparity = False
-    elif key == ord('f'):
+    elif key == ord("f"):
         natrual = False
         canny = False
         blur = False
         faceDetection = True
         disparity = False
-    elif key == ord('d'):
+    elif key == ord("d"):
         natrual = False
-        canny = False   
+        canny = False
         blur = False
         faceDetection = False
         disparity = True
 
-        
-
-# ====================================================================
-    if(natrual):
+    # ====================================================================
+    if natrual:
         filteredImage1 = frame
         filteredImage2 = frame2
-    if(canny):
+    if canny:
         filteredImage1 = cv2.Canny(frame, cannylow, cannyhigh)
         filteredImage2 = cv2.Canny(frame2, cannylow, cannyhigh)
-    if(blur):
+    if blur:
         filteredImage1 = cv2.blur(frame, (5, 5))
         filteredImage2 = cv2.blur(frame2, (5, 5))
 
-    if(faceDetection):
+    if faceDetection:
 
         # Create a 4D blob from a frame.
-        blob = cv2.dnn.blobFromImage(frame, 1.0, (in_width, in_height), mean, swapRB=False, crop=False)
-        #blob2 = cv2.dnn.blobFromImage(frame2, 1.0, (in_width, in_height), mean, swapRB=False, crop=False)
+        blob = cv2.dnn.blobFromImage(
+            frame, 1.0, (in_width, in_height), mean, swapRB=False, crop=False
+        )
+        # blob2 = cv2.dnn.blobFromImage(frame2, 1.0, (in_width, in_height), mean, swapRB=False, crop=False)
         # Run a model
         net.setInput(blob)
-        
+
         detections = net.forward()
 
         frame_height = frame.shape[0]
@@ -149,9 +150,16 @@ while alive:
                 x_right_top = int(detections[0, 0, i, 5] * frame_width)
                 y_right_top = int(detections[0, 0, i, 6] * frame_height)
 
-                cv2.rectangle(frame, (x_left_bottom, y_left_bottom), (x_right_top, y_right_top), (0, 255, 0))
+                cv2.rectangle(
+                    frame,
+                    (x_left_bottom, y_left_bottom),
+                    (x_right_top, y_right_top),
+                    (0, 255, 0),
+                )
                 label = "Confidence: %.4f" % confidence
-                label_size, base_line = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
+                label_size, base_line = cv2.getTextSize(
+                    label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1
+                )
 
                 cv2.rectangle(
                     frame,
@@ -160,31 +168,32 @@ while alive:
                     (255, 255, 255),
                     cv2.FILLED,
                 )
-                cv2.putText(frame, label, (x_left_bottom, y_left_bottom), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0))
+                cv2.putText(
+                    frame,
+                    label,
+                    (x_left_bottom, y_left_bottom),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.5,
+                    (0, 0, 0),
+                )
 
         t, _ = net.getPerfProfile()
         label = "Inference time: %.2f ms" % (t * 1000.0 / cv2.getTickFrequency())
         cv2.putText(frame, label, (0, 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0))
-        cv2.imshow(win_name1, frame)
+        cv2.imshow("banana", frame)
         filteredImage1 = frame
         filteredImage2 = frame2
-    if(disparity):
-        cv2.imwrite('leftAsset.png', frame)
-        cv2.imwrite('rightAsset.png', frame2)
-        imgL = cv2.imread('leftAsset.png', cv2.IMREAD_GRAYSCALE)
-        imgR = cv2.imread('rightAsset.png', cv2.IMREAD_GRAYSCALE)
+    if disparity:
+        cv2.imwrite("leftAsset.png", frame)
+        cv2.imwrite("rightAsset.png", frame2)
+        imgL = cv2.imread("leftAsset.png", cv2.IMREAD_GRAYSCALE)
+        imgR = cv2.imread("rightAsset.png", cv2.IMREAD_GRAYSCALE)
         stereo = cv2.StereoBM.create(numDisparities=16, blockSize=15)
-        disparityComputed = stereo.compute(imgL,imgR)
-        filteredImage1 = disparityComputed
-        #filteredImage2 = stereo.compute(imgL,imgR)
+        disparityComputed = stereo.compute(imgL, imgR)
+        cv2.imshow("Disparity", disparityComputed)
+        # filteredImage2 = stereo.compute(imgL,imgR)
 
-       # print("Disparity")
-
-        
-
-
-            
-
+    # print("Disparity")
 
 
 cam1.stop()
