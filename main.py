@@ -198,7 +198,7 @@ while alive:
         disparityComputed = cv2.normalize(disparityComputed, disparityComputed, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
         disparityComputed = numpy.uint8(disparityComputed)
         
-        cv2.imshow("Disparity", gray1)
+        cv2.imshow("Disparity", disparityComputed)
         # filteredImage2 = stereo.compute(imgL,imgR)
 
     # print("Disparity")
