@@ -172,7 +172,9 @@ while alive:
         imgL = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         imgR = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
         filteredImage1 =  stereo.compute(imgL,imgR)
-        filteredImage2 = stereo.compute(imgL,imgR)
+        #filteredImage2 = stereo.compute(imgL,imgR)
+
+        print("Disparity")
 
         
 
