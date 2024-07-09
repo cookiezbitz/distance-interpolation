@@ -57,6 +57,8 @@ cam1.configure(preview_config)
 cam2.configure(preview_config2)
 cam1.start()
 cam2.start()
+# matplotlib settings
+plt.ion()
 
 cv2.namedWindow(win_name1, cv2.WINDOW_NORMAL)
 cv2.namedWindow(win_name2, cv2.WINDOW_NORMAL)
@@ -126,7 +128,6 @@ while alive:
     if blur:
         filteredImage1 = cv2.blur(frame, (5, 5))
         filteredImage2 = cv2.blur(frame2, (5, 5))
-
     if faceDetection:
 
         # Create a 4D blob from a frame.
