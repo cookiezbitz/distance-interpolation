@@ -126,7 +126,8 @@ while alive:
         filteredImage1 = cv2.Canny(frame, cannylow, cannyhigh)
         filteredImage2 = cv2.Canny(frame2, cannylow, cannyhigh)
     if blur:
-        filteredImage1 = p
+        filteredImage1 = cv2.blur(frame, (5, 5))
+        filteredImage2 = cv2.blur(frame2, (5, 5))
     if faceDetection:
 
         # Create a 4D blob from a frame.
@@ -188,7 +189,7 @@ while alive:
         cv2.imwrite("rightAsset.png", frame2)
         imgL = cv2.imread("leftAsset.png", cv2.IMREAD_GRAYSCALE)
         imgR = cv2.imread("rightAsset.png", cv2.IMREAD_GRAYSCALE)
-        stereo = cv2.StereoBM.create(numDisparities=16, blockSize=15)
+        stereo = cv2.StereoBM.create(numDisparities=64, blockSize=9)
         disparityComputed = stereo.compute(imgL, imgR)
         plt.imshow(disparityComputed, "gray")
         plt.show()
