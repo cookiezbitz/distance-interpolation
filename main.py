@@ -169,8 +169,8 @@ while alive:
         filteredImage1 = frame
         filteredImage2 = frame2
     if(disparity):
-        imgL = cv2.imread(frame, cv2.IMREAD_GRAYSCALE)
-        imgR = cv2.imread(frame2, cv2.IMREAD_GRAYSCALE)
+        imgL = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        imgR = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
         filteredImage1 =  stereo.compute(imgL,imgR)
         filteredImage2 = stereo.compute(imgL,imgR)
 
